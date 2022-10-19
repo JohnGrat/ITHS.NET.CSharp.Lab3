@@ -1,51 +1,38 @@
-﻿
-
-using CommandLine.Text;
-using CommandLine;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
+﻿using CommandLine;
 using Word;
 using ConsoleApp6.Options;
-using System.Diagnostics.Metrics;
 using Word.Model;
 
 try
 {
     ParserResult<object> result = Parser.Default.ParseArguments<New, Lists, Add, Remove, Count, Words, Practice>(args);
-    result.MapResult(
-      (Lists opts) => RunPrintLists(),
-      (New opts) => RunNewlist(opts),
-      (Add opts) => RunAddEntry(opts),
-      (Remove opts) => RunRemoveWord(opts),
-      (Count opts) => RunCountWords(opts),
-      (Words opts) => RunPrintWords(opts),
-      (Practice opts) => RunPraticeWords(opts),
-      errs => 1);
+    result.WithParsed<Lists>(o => RunPrintLists());
+    result.WithParsed<New>(o => RunNewlist(o));
+    result.WithParsed<Add>(o => RunAddEntry(o));
+    result.WithParsed<Remove>(o => RunRemoveWord(o));
+    result.WithParsed<Count>(o => RunCountWords(o));
+    result.WithParsed<Words>(o => RunPrintWords(o));
+    result.WithParsed<Practice>(o => RunPraticeWords(o));
 }
 catch (Exception e)
 {
     Console.WriteLine(e.Message);
 }
 
-int RunPrintLists()
+void RunPrintLists()
 {
     foreach (var item in WordList.GetLists()) Console.WriteLine(item);
-    return 0;
 }
 
-int RunNewlist(New opts)
+void RunNewlist(New opts)
 {
     if (WordList.GetLists().Contains(opts.ListName)) throw new Exception("Listname already in use");
     WordList newList = new WordList(opts.ListName, opts.Languages.ToArray());
     newList.Save();
     RunAddEntry(new Add() { ListName = newList.Name });
-    return 0;
 }
 
-int RunAddEntry(Add opts)
+void RunAddEntry(Add opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int count = 0;
@@ -66,10 +53,9 @@ int RunAddEntry(Add opts)
     End:
     Console.WriteLine($"You added {count} words");
     list.Save();
-    return 0;
 }
 
-int RunRemoveWord(Remove opts)
+void RunRemoveWord(Remove opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int index = Array.IndexOf(list.Languages, opts.LangName);
@@ -78,10 +64,9 @@ int RunRemoveWord(Remove opts)
         if(!list.Remove(index, word)) Console.WriteLine($"{word} doesnt exist");
     }
     list.Save();
-    return 0;
 }
 
-int RunPrintWords(Words opts)
+void RunPrintWords(Words opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     if (!string.IsNullOrWhiteSpace(opts.sortByLanguage))
@@ -93,17 +78,15 @@ int RunPrintWords(Words opts)
     }
     else
         Console.WriteLine(list.ToString('\t'));
-    return 0;
 }
 
-int RunCountWords(Count opts)
+void RunCountWords(Count opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     Console.WriteLine(list.Count);
-    return 0;
 }
 
-int RunPraticeWords(Practice opts)
+void RunPraticeWords(Practice opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int count = 0, success = 0;
@@ -122,5 +105,4 @@ int RunPraticeWords(Practice opts)
     }
     End:
     Console.WriteLine($"You praticed {count} with a successrate of {((double)success / count):P1}");
-    return 0;
 }

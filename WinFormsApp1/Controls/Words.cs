@@ -11,13 +11,13 @@ using Word;
 
 namespace WinFormsApp1
 {
-    public partial class WordsView : UserControl
+    public partial class Words : UserControl
     {
         private WordList _wordList;
         private DataTable dt = new DataTable();
         public event Action<string[]> addWord;
 
-        public WordsView(WordList a)
+        public Words(WordList a)
         {
             InitializeComponent();
             _wordList = a;

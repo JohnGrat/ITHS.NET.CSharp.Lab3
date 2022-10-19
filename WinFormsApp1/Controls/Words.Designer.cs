@@ -1,6 +1,6 @@
 ﻿namespace WinFormsApp1
 {
-    partial class WordsView
+    partial class Words
     {
         /// <summary> 
         /// Required designer variable.

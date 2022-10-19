@@ -1,6 +1,6 @@
 ﻿namespace WinFormsApp1
 {
-    partial class PracticeView
+    partial class Practice
     {
         /// <summary> 
         /// Required designer variable.

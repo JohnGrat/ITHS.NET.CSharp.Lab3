@@ -13,7 +13,7 @@ using Word.Model;
 
 namespace WinFormsApp1
 {
-    public partial class PracticeView : UserControl
+    public partial class Practice : UserControl
     {
         private WordList _wordList;
         private WordModel _word;
@@ -21,7 +21,7 @@ namespace WinFormsApp1
         private int _questions;
         private string Score => $"You praticed {_questions} words with a successrate of {((double)_correct / _questions):P1}";
 
-        public PracticeView(WordList a)
+        public Practice(WordList a)
         {
             InitializeComponent();
             Dock = DockStyle.Fill;

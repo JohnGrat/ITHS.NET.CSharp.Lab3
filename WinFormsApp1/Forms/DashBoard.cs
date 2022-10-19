@@ -17,7 +17,7 @@ namespace WinFormsApp1
             _wordList = wordList;
             _wordList_SaveSuccess(_wordList.Count);
             _wordList.SaveSuccess += _wordList_SaveSuccess;
-            panel1.Controls.Add(new WordsView(_wordList) { Dock = DockStyle.Fill });
+            panel1.Controls.Add(new Words(_wordList) { Dock = DockStyle.Fill });
         }
 
         private void _wordList_SaveSuccess(int obj)
@@ -28,14 +28,14 @@ namespace WinFormsApp1
         private void wordsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             panel1.Controls.Clear();
-            WordsView c = new WordsView(_wordList) { Dock = DockStyle.Fill };
+            Words c = new Words(_wordList) { Dock = DockStyle.Fill };
             panel1.Controls.Add(c);
         }
 
         private void practiceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             panel1.Controls.Clear();
-            PracticeView c = new PracticeView(_wordList);
+            Practice c = new Practice(_wordList);
             panel1.Controls.Add(c);
         }
 
