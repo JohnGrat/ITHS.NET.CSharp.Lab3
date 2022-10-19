@@ -2,7 +2,7 @@
   "profiles": {
     "ConsoleApp6": {
       "commandName": "Project",
-      "commandLineArgs": "help"
+      "commandLineArgs": "-new test test1 test2"
     }
   }
 }

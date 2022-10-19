@@ -35,14 +35,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.wordsCountLabel = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.openButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // directoryListBox
             // 
             this.directoryListBox.FormattingEnabled = true;
             this.directoryListBox.ItemHeight = 15;
-            this.directoryListBox.Location = new System.Drawing.Point(13, 54);
+            this.directoryListBox.Location = new System.Drawing.Point(13, 27);
             this.directoryListBox.Name = "directoryListBox";
             this.directoryListBox.Size = new System.Drawing.Size(155, 199);
             this.directoryListBox.TabIndex = 0;
@@ -54,7 +54,7 @@
             this.columnListBox.ForeColor = System.Drawing.SystemColors.WindowText;
             this.columnListBox.FormattingEnabled = true;
             this.columnListBox.ItemHeight = 15;
-            this.columnListBox.Location = new System.Drawing.Point(174, 54);
+            this.columnListBox.Location = new System.Drawing.Point(172, 27);
             this.columnListBox.Name = "columnListBox";
             this.columnListBox.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.columnListBox.Size = new System.Drawing.Size(123, 199);
@@ -62,7 +62,7 @@
             // 
             // createButton
             // 
-            this.createButton.Location = new System.Drawing.Point(12, 259);
+            this.createButton.Location = new System.Drawing.Point(94, 232);
             this.createButton.Name = "createButton";
             this.createButton.Size = new System.Drawing.Size(75, 23);
             this.createButton.TabIndex = 2;
@@ -73,7 +73,7 @@
             // deleteButton
             // 
             this.deleteButton.Enabled = false;
-            this.deleteButton.Location = new System.Drawing.Point(93, 259);
+            this.deleteButton.Location = new System.Drawing.Point(94, 263);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
             this.deleteButton.TabIndex = 3;
@@ -84,7 +84,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 36);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(30, 15);
             this.label1.TabIndex = 4;
@@ -93,7 +93,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(174, 36);
+            this.label2.Location = new System.Drawing.Point(174, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 15);
             this.label2.TabIndex = 5;
@@ -102,28 +102,29 @@
             // wordsCountLabel
             // 
             this.wordsCountLabel.AutoSize = true;
-            this.wordsCountLabel.Location = new System.Drawing.Point(174, 263);
+            this.wordsCountLabel.Location = new System.Drawing.Point(175, 236);
             this.wordsCountLabel.Name = "wordsCountLabel";
             this.wordsCountLabel.Size = new System.Drawing.Size(44, 15);
             this.wordsCountLabel.TabIndex = 6;
             this.wordsCountLabel.Text = "Words:";
             // 
-            // label3
+            // openButton
             // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.label3.Location = new System.Drawing.Point(13, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(205, 15);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Doubleclick or press Enter to open list";
+            this.openButton.Enabled = false;
+            this.openButton.Location = new System.Drawing.Point(13, 232);
+            this.openButton.Name = "openButton";
+            this.openButton.Size = new System.Drawing.Size(75, 23);
+            this.openButton.TabIndex = 8;
+            this.openButton.Text = "Open";
+            this.openButton.UseVisualStyleBackColor = true;
+            this.openButton.Click += new System.EventHandler(this.openButton_Click);
             // 
             // ChooseList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(307, 294);
-            this.Controls.Add(this.label3);
+            this.ClientSize = new System.Drawing.Size(307, 293);
+            this.Controls.Add(this.openButton);
             this.Controls.Add(this.wordsCountLabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -149,6 +150,6 @@
         private Label label1;
         private Label label2;
         private Label wordsCountLabel;
-        private Label label3;
+        private Button openButton;
     }
 }

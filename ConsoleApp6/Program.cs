@@ -57,7 +57,7 @@ int RunAddEntry(Add opts)
         {
             Console.WriteLine($"Write the the word in {item}");
             string input = Console.ReadLine();
-            if (string.IsNullOrEmpty(input)) goto End;
+            if (string.IsNullOrWhiteSpace(input)) goto End;
             words.Add(input);
         }
         list.Add(words.ToArray());
@@ -84,7 +84,7 @@ int RunRemoveWord(Remove opts)
 int RunPrintWords(Words opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
-    if (!string.IsNullOrEmpty(opts.sortByLanguage))
+    if (!string.IsNullOrWhiteSpace(opts.sortByLanguage))
     {
         if (!list.Languages.Contains(opts.sortByLanguage)) throw new ArgumentException($"{opts.ListName} does not have language {opts.sortByLanguage}");
         int index = Array.IndexOf(list.Languages, opts.sortByLanguage);
@@ -115,7 +115,7 @@ int RunPraticeWords(Practice opts)
         Console.WriteLine($"Translate this word to {list.Languages[word.FromLanguage]} to {list.Languages[word.ToLanguage]}");
         Console.WriteLine($"the word is {question}");
         string input = Console.ReadLine();
-        if (string.IsNullOrEmpty(input)) goto End;
+        if (string.IsNullOrWhiteSpace(input)) goto End;
         if (input == answear) success++;
         else Console.WriteLine($"Wrong the correct answear is {answear}");
         count++;

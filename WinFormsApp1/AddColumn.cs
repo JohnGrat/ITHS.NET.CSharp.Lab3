@@ -34,7 +34,7 @@ namespace WinFormsApp1
 
         private void columnNameBox_TextChanged(object sender, EventArgs e)
         {
-            submitButton.Enabled = !string.IsNullOrEmpty(columnNameBox.Text);
+            submitButton.Enabled = !string.IsNullOrWhiteSpace(columnNameBox.Text);
         }
     }
 }

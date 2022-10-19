@@ -60,7 +60,7 @@ namespace WinFormsApp1
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            correctButton.Enabled = !string.IsNullOrEmpty(textBox1.Text);
+            correctButton.Enabled = !string.IsNullOrWhiteSpace(textBox1.Text);
         }
     }
 }

@@ -49,12 +49,13 @@ namespace WinFormsApp1
         {
             Warning.Hide();
             DataGridViewCell[] cells = listDataGridView.Rows[e.RowIndex].Cells.Cast<DataGridViewCell>().Select(x => x).ToArray();
-            DataGridViewCell[] emptyCells = cells.Where(x => string.IsNullOrEmpty((string)x.FormattedValue)).ToArray();
+            DataGridViewCell[] emptyCells = cells.Where(x => string.IsNullOrWhiteSpace((string)x.FormattedValue)).ToArray();
             foreach (DataGridViewCell cell in cells)
             {
+                string cellValue = (string)cell.FormattedValue;
                 if (cells.Count() == emptyCells.Count())
                     cell.ErrorText = "";
-                else if (string.IsNullOrEmpty((string)cell.FormattedValue) && !cell.IsInEditMode)
+                else if (string.IsNullOrWhiteSpace(cellValue) && !cell.IsInEditMode)
                     cell.ErrorText = "Cannot be empty";
                 else cell.ErrorText = "";
             }
@@ -74,7 +75,7 @@ namespace WinFormsApp1
             foreach (DataGridViewRow item in dataGrid)
             {
                 string[] word = item.Cells.Cast<DataGridViewCell>().Select(x => (string)x.FormattedValue).ToArray();
-                if (!word.Any(x => string.IsNullOrEmpty(x))) _wordList.Add(word);
+                if (!word.Any(x => string.IsNullOrWhiteSpace(x))) _wordList.Add(word);
             }
             _wordList.Save();
             MessageBox.Show("save successful");

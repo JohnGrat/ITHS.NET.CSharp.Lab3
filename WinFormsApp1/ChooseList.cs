@@ -33,12 +33,13 @@ namespace WinFormsApp1
 
         private void DirectoryListBox_KeyPress(object? sender, KeyPressEventArgs e)
         {
-            if(e.KeyChar == Convert.ToChar(Keys.Enter)) directoryListBox_MouseDoubleClick(null, new EventArgs());
+            if(e.KeyChar == Convert.ToChar(Keys.Enter)) OpenList();
         }
 
         private void directoryListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             deleteButton.Enabled = !string.IsNullOrEmpty(directoryListBox.Text);
+            openButton.Enabled = !string.IsNullOrEmpty(directoryListBox.Text);
             if (deleteButton.Enabled)
             {
                 WordList selected = WordList.LoadList(directoryListBox.Text);
@@ -56,11 +57,7 @@ namespace WinFormsApp1
 
         private void directoryListBox_MouseDoubleClick(object sender, EventArgs e)
         {
-            Hide();
-            DashBoard form = new DashBoard(WordList.LoadList(directoryListBox.Text));
-            form.StartPosition = FormStartPosition.CenterScreen;
-            form.Closed += (s, args) => Show();
-            form.Show();
+            OpenList();
         }
 
         private void createButton_Click(object sender, EventArgs e)
@@ -81,5 +78,18 @@ namespace WinFormsApp1
             _lists.Remove(directoryListBox.Text);
         }
 
+        private void openButton_Click(object sender, EventArgs e)
+        {
+            OpenList();
+        }
+
+        private void OpenList()
+        {
+            Hide();
+            DashBoard form = new DashBoard(WordList.LoadList(directoryListBox.Text));
+            form.StartPosition = FormStartPosition.CenterScreen;
+            form.Closed += (s, args) => Show();
+            form.Show();
+        }
     }
 }

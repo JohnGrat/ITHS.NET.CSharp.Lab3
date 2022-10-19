@@ -47,7 +47,7 @@ namespace WinFormsApp1
 
         private void ValidateForm(object sender, EventArgs e)
         {
-            addColumnButton.Enabled = !string.IsNullOrEmpty(listNameBox.Text);
+            addColumnButton.Enabled = !string.IsNullOrWhiteSpace(listNameBox.Text);
             deleteColumnButton.Enabled = _listColumn.Any();
             if (_lists.Any(s => s == listNameBox.Text)) warningLabel.Show();
             else warningLabel.Hide();

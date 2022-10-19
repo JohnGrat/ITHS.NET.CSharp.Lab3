@@ -70,7 +70,8 @@ namespace Word
         public void Add(params string[] translations)
         {
             if (Languages!.Count() != translations.Count()) new ArgumentException("Missing translations");
-            Words.Add(new WordModel(translations));
+            string[] translationsTrimed = translations.Select(x => x.Trim()).ToArray();
+            Words.Add(new WordModel(translationsTrimed));
         }
 
         public bool Remove(int translation, string word)
@@ -108,7 +109,7 @@ namespace Word
                 parser.SetDelimiters(";");
                 while (!parser.EndOfData)
                 {
-                    fields.Add(parser.ReadFields().Where(x => !String.IsNullOrEmpty(x)).ToArray());
+                    fields.Add(parser.ReadFields().Where(x => !String.IsNullOrWhiteSpace(x)).ToArray());
                 }
                 return new WordList(fileName, fields.Skip(1).ToList(), fields.First());
             }
