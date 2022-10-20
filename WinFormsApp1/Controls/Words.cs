@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -25,19 +26,13 @@ namespace WinFormsApp1
             seedDataTable();
             listDataGridView.DataSource = dt;
             listDataGridView.CellEndEdit += ListView_CellEndEdit;
-            listDataGridView.UserDeletedRow += ListDataGridView_UserDeletedRow;
             listDataGridView.CellBeginEdit += ListDataGridView_CellBeginEdit;
-        }
-
-        private void ListDataGridView_UserDeletedRow(object? sender, DataGridViewRowEventArgs e)
-        {
-            ValidateForm();
         }
 
         private void ListDataGridView_CellBeginEdit(object? sender, DataGridViewCellCancelEventArgs e)
         {
-            saveButton.Enabled = false;
-            Warning.Show();
+            listDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "";
+            saveButton.Enabled = true;
         }
 
         private void addWordHandler(string[] obj)
@@ -48,18 +43,6 @@ namespace WinFormsApp1
         private void ListView_CellEndEdit(object? sender, DataGridViewCellEventArgs e)
         {
             Warning.Hide();
-            DataGridViewCell[] cells = listDataGridView.Rows[e.RowIndex].Cells.Cast<DataGridViewCell>().Select(x => x).ToArray();
-            DataGridViewCell[] emptyCells = cells.Where(x => string.IsNullOrWhiteSpace((string)x.FormattedValue)).ToArray();
-            foreach (DataGridViewCell cell in cells)
-            {
-                string cellValue = (string)cell.FormattedValue;
-                if (cells.Count() == emptyCells.Count())
-                    cell.ErrorText = "";
-                else if (string.IsNullOrWhiteSpace(cellValue) && !cell.IsInEditMode)
-                    cell.ErrorText = "Cannot be empty";
-                else cell.ErrorText = "";
-            }
-            ValidateForm();
         }
 
         private void seedDataTable()
@@ -70,34 +53,42 @@ namespace WinFormsApp1
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            _wordList.ClearWords();
-            DataGridViewRow[] dataGrid = listDataGridView.Rows.Cast<DataGridViewRow>().Select(x => x).ToArray();
-            foreach (DataGridViewRow item in dataGrid)
+            if (ValidateForm())
             {
-                string[] word = item.Cells.Cast<DataGridViewCell>().Select(x => (string)x.FormattedValue).ToArray();
-                if (!word.Any(x => string.IsNullOrWhiteSpace(x))) _wordList.Add(word);
+                _wordList.ClearWords();
+                DataGridViewRow[] dataGrid = listDataGridView.Rows.Cast<DataGridViewRow>().Select(x => x).ToArray();
+                foreach (DataGridViewRow item in dataGrid)
+                {
+                    string[] word = item.Cells.Cast<DataGridViewCell>().Select(x => (string)x.FormattedValue).ToArray();
+                    if (!word.Any(x => string.IsNullOrWhiteSpace(x))) _wordList.Add(word);
+                }
+                _wordList.Save();
+                MessageBox.Show("save successful");
             }
-            _wordList.Save();
-            MessageBox.Show("save successful");
+            else
+            {
+                saveButton.Enabled = false;
+                MessageBox.Show("not saved invalid datagrid");
+            }
         }
 
-        private void ValidateForm()
+        private bool ValidateForm()
         {
             bool hasErrorText = false;
             foreach (DataGridViewRow row in listDataGridView.Rows)
             {
+                if (row.Cells.Cast<DataGridViewCell>().All(x => string.IsNullOrWhiteSpace(x.Value as string))) continue;
                 foreach (DataGridViewCell cell in row.Cells)
                 {
-                    if (cell.ErrorText.Length > 0)
+                    if (string.IsNullOrWhiteSpace(cell.Value as string))
                     {
+                        cell.ErrorText = "Cannot be empty";
                         hasErrorText = true;
-                        break;
                     }
+                    else cell.ErrorText = "";
                 }
-                if (hasErrorText)
-                    break;
             }
-            saveButton.Enabled = !hasErrorText;
+            return !hasErrorText;
         }
     }
 }
