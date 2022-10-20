@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "ConsoleApp6": {
-      "commandName": "Project",
-      "commandLineArgs": "-new \"Cosas de la casa2\" swedish english"
-    }
-  }
-}
