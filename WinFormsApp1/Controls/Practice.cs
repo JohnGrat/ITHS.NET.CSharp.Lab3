@@ -23,9 +23,9 @@ namespace WinFormsApp1
         {
             WordModel b = _wordList.GetWordToPractice();
             _word = b;
-            var fromWord = b.Translations[b.FromLanguage];
-            var fromLang = _wordList.Languages[b.FromLanguage];
-            var toLang = _wordList.Languages[b.ToLanguage];
+            string fromWord = b.Translations[b.FromLanguage];
+            string fromLang = _wordList.Languages[b.FromLanguage];
+            string toLang = _wordList.Languages[b.ToLanguage];
             questionLabel.Text = $"Translate the word {fromWord} from ({fromLang}) to ({toLang})";
         }
 
@@ -39,7 +39,7 @@ namespace WinFormsApp1
 
         private void correctButton_Click(object sender, EventArgs e)
         {
-            var toWord = _word.Translations[_word.ToLanguage];
+            string toWord = _word.Translations[_word.ToLanguage];
             if (string.Equals(textBox1.Text, toWord, StringComparison.CurrentCultureIgnoreCase)) _correct++;
             else MessageBox.Show($"Wrong the correct answear is: {toWord}");
             _questions++;

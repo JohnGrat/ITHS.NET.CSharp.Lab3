@@ -37,7 +37,7 @@ void RunAddEntry(Add opts)
     {
         Console.WriteLine("New word");
         List<string> words = new List<string>();
-        foreach (var item in list.Languages)
+        foreach (string item in list.Languages)
         {
             Console.WriteLine($"Write the the word in {item}");
             string input = Console.ReadLine();
@@ -56,7 +56,7 @@ void RunRemoveWord(Remove opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int index = Array.IndexOf(list.Languages, opts.LangName);
-    foreach (var word in opts.Words)
+    foreach (string word in opts.Words)
     {
         if(!list.Remove(index, word)) Console.WriteLine($"{word} doesnt exist");
     }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualBasic.FileIO;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Word.Models;
 
@@ -14,13 +13,13 @@ namespace Word
         public string[] Languages { get; }
         private List<WordModel> Words { get; }
 
-        public event Action<int> SaveSuccess;
+        public event Action<int>? SaveSuccess;
 
         public string ToString(char Delimiter)
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.AppendLine(String.Join(Delimiter, Languages));
-            foreach (var item in Words)
+            foreach (WordModel item in Words)
             {
                 sb.AppendLine(String.Join(Delimiter, item.Translations));
             }
@@ -68,8 +67,8 @@ namespace Word
 
         public bool Remove(int translation, string word)
         {
-            var ToBeDeleted = Words.RemoveAll(x => x.Translations[translation] == word);
-            return ToBeDeleted > 0 ? true : false;
+            int toBeDeleted = Words.RemoveAll(x => x.Translations[translation] == word);
+            return toBeDeleted > 0 ? true : false;
         }
 
         public int Count => Words.Count();
@@ -78,15 +77,15 @@ namespace Word
 
         public void List(int sortByTranslation, Action<string[]> showTranslations)
         {
-            var SortedList = Words.OrderBy(x => x.Translations[sortByTranslation]).ToList();
-            foreach (var item in SortedList) showTranslations?.Invoke(item.Translations);
+            List<WordModel> SortedList = Words.OrderBy(x => x.Translations[sortByTranslation]).ToList();
+            foreach (WordModel item in SortedList) showTranslations?.Invoke(item.Translations);
         }
 
         public WordModel GetWordToPractice()
         {
             Random rnd = new Random();
             int r = rnd.Next(Words.Count);
-            var a = Words[r].Translations.Select((x, index) => index ).OrderBy(i => rnd.Next()).Take(2).ToArray();
+            int[] a = Words[r].Translations.Select((x, index) => index ).OrderBy(i => rnd.Next()).Take(2).ToArray();
             return new WordModel(a[0], a[1], Words[r].Translations);
         }
 
