@@ -1,9 +1,4 @@
-using System;
-using System.ComponentModel;
-using System.Data;
-using System.Windows.Forms;
 using Word;
-using Word.Model;
 
 namespace WinFormsApp1
 {

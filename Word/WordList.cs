@@ -1,15 +1,6 @@
 ﻿using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using System.IO.Enumeration;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Xml.Linq;
-using Word.Model;
+using Word.Models;
 
 namespace Word
 {

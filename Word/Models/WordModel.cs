@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Word.Model
+namespace Word.Models
 {
     public class WordModel
     {
@@ -13,7 +8,6 @@ namespace Word.Model
         public string[] Translations { get; set; }
         public int FromLanguage { get; }
         public int ToLanguage { get; }
-
 
         public WordModel(params string[] translations)
         {

@@ -1,7 +1,7 @@
 ﻿using CommandLine;
 using Word;
 using ConsoleApp6.Options;
-using Word.Model;
+using Word.Models;
 
 try
 {
@@ -19,10 +19,7 @@ catch (Exception e)
     Console.WriteLine(e.Message);
 }
 
-void RunPrintLists()
-{
-    foreach (var item in WordList.GetLists()) Console.WriteLine(item);
-}
+void RunPrintLists() => Array.ForEach(WordList.GetLists(), x => Console.WriteLine(x));
 
 void RunNewlist(New opts)
 {
@@ -35,7 +32,7 @@ void RunNewlist(New opts)
 void RunAddEntry(Add opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
-    int count = 0;
+    int newWords = 0;
     while (true)
     {
         Console.WriteLine("New word");
@@ -47,11 +44,11 @@ void RunAddEntry(Add opts)
             if (string.IsNullOrWhiteSpace(input)) goto End;
             words.Add(input);
         }
+        newWords++;
         list.Add(words.ToArray());
-        count++;
     }
     End:
-    Console.WriteLine($"You added {count} words");
+    Console.WriteLine($"You added {newWords} words");
     list.Save();
 }
 
@@ -76,15 +73,10 @@ void RunPrintWords(Words opts)
         Console.WriteLine(String.Join('\t', list.Languages));
         list.List(index, (x) => Console.WriteLine(String.Join('\t', x)));
     }
-    else
-        Console.WriteLine(list.ToString('\t'));
+    else Console.WriteLine(list.ToString('\t'));
 }
 
-void RunCountWords(Count opts)
-{
-    WordList list = WordList.LoadList(opts.ListName);
-    Console.WriteLine(list.Count);
-}
+void RunCountWords(Count opts) => Console.WriteLine(WordList.LoadList(opts.ListName).Count);
 
 void RunPraticeWords(Practice opts)
 {
@@ -95,14 +87,13 @@ void RunPraticeWords(Practice opts)
         WordModel word = list.GetWordToPractice();
         string question = word.Translations[word.FromLanguage];
         string answear = word.Translations[word.ToLanguage];
-        Console.WriteLine($"Translate this word to {list.Languages[word.FromLanguage]} to {list.Languages[word.ToLanguage]}");
+        Console.WriteLine($"Translate this word to {list.Languages[word.ToLanguage]} from {list.Languages[word.FromLanguage]}");
         Console.WriteLine($"the word is {question}");
         string input = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(input)) goto End;
-        if (input == answear) success++;
+        if (string.IsNullOrWhiteSpace(input)) break;
+        if(string.Equals(input, answear, StringComparison.OrdinalIgnoreCase)) success++;
         else Console.WriteLine($"Wrong the correct answear is {answear}");
         count++;
     }
-    End:
     Console.WriteLine($"You praticed {count} with a successrate of {((double)success / count):P1}");
 }

@@ -1,6 +1,4 @@
 ﻿using CommandLine;
-using CommandLine.Text;
-using System.ComponentModel.DataAnnotations;
 
 namespace ConsoleApp6.Options
 {
