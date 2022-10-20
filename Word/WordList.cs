@@ -18,7 +18,7 @@ namespace Word
         public string ToString(char Delimiter)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(String.Join(Delimiter, Languages));
+            sb.AppendLine(String.Join(Delimiter, Languages).ToUpper());
             foreach (WordModel item in Words)
             {
                 sb.AppendLine(String.Join(Delimiter, item.Translations));
@@ -28,9 +28,8 @@ namespace Word
         
         public WordList(string name, List<string[]> words, params string[] languages)
         {
-            if (!(languages.Distinct().Count() == languages.Length))
-                throw new Exception("list cant have two of the same language");
-
+            if ((languages.Distinct(StringComparer.OrdinalIgnoreCase).Count() < languages.Length))
+                throw new Exception("list cant have two of the same language"); 
             Name = name;
             Languages = languages;
             Words = words.OrderBy(x => x.First()).Select(x => new WordModel(x)).ToList();
@@ -67,7 +66,7 @@ namespace Word
 
         public bool Remove(int translation, string word)
         {
-            int toBeDeleted = Words.RemoveAll(x => x.Translations[translation] == word);
+            int toBeDeleted = Words.RemoveAll(x => String.Equals(x.Translations[translation], word, StringComparison.OrdinalIgnoreCase));
             return toBeDeleted > 0 ? true : false;
         }
 

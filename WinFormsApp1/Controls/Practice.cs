@@ -40,7 +40,7 @@ namespace WinFormsApp1
         private void correctButton_Click(object sender, EventArgs e)
         {
             string toWord = _word.Translations[_word.ToLanguage];
-            if (string.Equals(textBox1.Text, toWord, StringComparison.CurrentCultureIgnoreCase)) _correct++;
+            if (String.Equals(textBox1.Text, toWord, StringComparison.CurrentCultureIgnoreCase)) _correct++;
             else MessageBox.Show($"Wrong the correct answear is: {toWord}");
             _questions++;
             textBox1.Text = "";
@@ -50,7 +50,7 @@ namespace WinFormsApp1
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            correctButton.Enabled = !string.IsNullOrWhiteSpace(textBox1.Text);
+            correctButton.Enabled = !String.IsNullOrWhiteSpace(textBox1.Text);
         }
     }
 }
