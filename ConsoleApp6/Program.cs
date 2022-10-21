@@ -2,7 +2,6 @@
 using Word;
 using ConsoleApp6.Options;
 using Word.Models;
-using System.Collections.Generic;
 
 try
 {
