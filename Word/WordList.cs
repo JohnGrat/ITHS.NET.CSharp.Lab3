@@ -13,7 +13,7 @@ namespace Word
 
         public string Name { get; }
         public string[] Languages { get; }
-        private List<WordModel> Words { get; }
+        private List<WordModel> _words { get; }
 
         public event Action<int>? SaveSuccess;
 
@@ -31,7 +31,7 @@ namespace Word
                 throw new Exception("list cant have two of the same language"); 
             Name = name;
             Languages = languages;
-            Words = words.OrderBy(x => x.First()).Select(x => new WordModel(x)).ToList();
+            _words = words.OrderBy(x => x.First()).Select(x => new WordModel(x)).ToList();
         }
 
         public WordList(string name, params string[] languages) : this(name, new List<string[]>(), languages)
@@ -60,32 +60,32 @@ namespace Word
         {
             if (Languages!.Count() != translations.Count()) new ArgumentException("Missing translations");
             string[] translationsTrimed = translations.Select(x => x.Trim()).ToArray();
-            Words.Add(new WordModel(translationsTrimed));
+            _words.Add(new WordModel(translationsTrimed));
         }
 
         public bool Remove(int translation, string word)
         {
-            int toBeDeleted = Words.RemoveAll(x => String.Equals(x.Translations[translation], word, StringComparison.OrdinalIgnoreCase));
+            int toBeDeleted = _words.RemoveAll(x => String.Equals(x.Translations[translation], word, StringComparison.OrdinalIgnoreCase));
             return toBeDeleted > 0 ? true : false;
         }
 
-        public int Count => Words.Count();
+        public int Count => _words.Count();
 
-        public void ClearWords() => Words.Clear();
+        public void ClearWords() => _words.Clear();
 
         public void List(int sortByTranslation, Action<string[]> showTranslations)
         {
-            CultureInfo culture = Words.Any(x => x.Translations.Any(word => new Regex(@"[äåöÄÅÖ]").IsMatch(word))) ? new CultureInfo("sv-SE") : CultureInfo.CurrentCulture;
-            List<WordModel> SortedList = Words.OrderBy(x => x.Translations[sortByTranslation], StringComparer.Create(culture, false)).ToList();
+            CultureInfo culture = _words.Any(x => x.Translations.Any(word => new Regex(@"[äåöÄÅÖ]").IsMatch(word))) ? new CultureInfo("sv-SE") : CultureInfo.CurrentCulture;
+            List<WordModel> SortedList = _words.OrderBy(x => x.Translations[sortByTranslation], StringComparer.Create(culture, false)).ToList();
             foreach (WordModel item in SortedList) showTranslations?.Invoke(item.Translations);
         }
 
         public WordModel GetWordToPractice()
         {
             Random rnd = new Random();
-            int r = rnd.Next(Words.Count);
-            int[] a = Words[r].Translations.Select((x, index) => index ).OrderBy(i => rnd.Next()).Take(2).ToArray();
-            return new WordModel(a[0], a[1], Words[r].Translations);
+            int r = rnd.Next(_words.Count);
+            int[] a = _words[r].Translations.Select((x, index) => index ).OrderBy(i => rnd.Next()).Take(2).ToArray();
+            return new WordModel(a[0], a[1], _words[r].Translations);
         }
 
         public static void DeleteList(string name) => File.Delete(GetFilePath(name));

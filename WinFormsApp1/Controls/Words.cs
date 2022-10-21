@@ -30,6 +30,7 @@ namespace WinFormsApp1
         {
             listDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].ErrorText = "";
             saveButton.Enabled = true;
+            warning.Hide();
         }
 
         private void ListView_CellEndEdit(object? sender, DataGridViewCellEventArgs e)
