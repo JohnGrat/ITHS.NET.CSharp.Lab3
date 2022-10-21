@@ -17,14 +17,11 @@ namespace Word
 
         public event Action<int>? SaveSuccess;
 
-        public string ToString(char Delimiter)
+        public string ToString(char delimiter, int sortByIndex = 0)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(String.Join(Delimiter, Languages).ToUpper());
-            foreach (WordModel item in Words)
-            {
-                sb.AppendLine(String.Join(Delimiter, item.Translations));
-            }
+            sb.AppendLine(String.Join(delimiter, Languages).ToUpper());
+            List(sortByIndex, (x => sb.AppendLine(String.Join(delimiter, x))));
             return sb.ToString().Trim();
         }
         

@@ -67,8 +67,7 @@ void RunPrintWords(Words opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int langIndex = String.IsNullOrWhiteSpace(opts.sortByLanguage) ? 0 : GetLanguageIndex(list.Languages, opts.sortByLanguage);
-    Console.WriteLine(String.Join('\t', list.Languages));
-    list.List(langIndex, (x) => Console.WriteLine(String.Join('\t', x)));
+    Console.WriteLine(list.ToString('\t', langIndex));
 }
 
 void RunCountWords(Count opts) => Console.WriteLine(WordList.LoadList(opts.ListName).Count);
