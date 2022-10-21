@@ -17,10 +17,17 @@ namespace WinFormsApp1
             Dock = DockStyle.Fill;
             _wordList = a;
             NextRound();
+            textBox1.KeyDown += TextBox1_KeyDown;
+        }
+
+        private void TextBox1_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) correct();
         }
 
         void NextRound()
         {
+            textBox1.Focus();
             WordModel b = _wordList.GetWordToPractice();
             _word = b;
             string fromWord = b.Translations[b.FromLanguage];
@@ -39,6 +46,16 @@ namespace WinFormsApp1
 
         private void correctButton_Click(object sender, EventArgs e)
         {
+            correct();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            correctButton.Enabled = !String.IsNullOrWhiteSpace(textBox1.Text);
+        }
+
+        private void correct()
+        {
             string toWord = _word.Translations[_word.ToLanguage];
             if (String.Equals(textBox1.Text, toWord, StringComparison.CurrentCultureIgnoreCase)) _correct++;
             else MessageBox.Show($"Wrong the correct answear is: {toWord}");
@@ -46,11 +63,6 @@ namespace WinFormsApp1
             textBox1.Text = "";
             scoreLabel.Text = Score;
             NextRound();
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            correctButton.Enabled = !String.IsNullOrWhiteSpace(textBox1.Text);
         }
     }
 }

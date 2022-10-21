@@ -18,6 +18,7 @@ namespace WinFormsApp1
             else
             {
                 _listColumn.Add(columnNameBox.Text);
+                columnNameBox.Text = "";
                 warningLabel.Hide();
             }
         }
