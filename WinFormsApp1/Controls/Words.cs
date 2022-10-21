@@ -7,13 +7,11 @@ namespace WinFormsApp1
     {
         private WordList _wordList;
         private DataTable _dt = new DataTable();
-        public event Action<string[]> addWord;
 
         public Words(WordList a)
         {
             InitializeComponent();
             _wordList = a;
-            addWord += addWordHandler;
             seedDataTable();
             listDataGridView.DataSource = _dt;
             listDataGridView.CellEndEdit += ListView_CellEndEdit;
@@ -34,11 +32,6 @@ namespace WinFormsApp1
             saveButton.Enabled = true;
         }
 
-        private void addWordHandler(string[] obj)
-        {         
-            _dt.Rows.Add(obj);
-        }
-
         private void ListView_CellEndEdit(object? sender, DataGridViewCellEventArgs e)
         {
             warning.Hide();
@@ -47,7 +40,7 @@ namespace WinFormsApp1
         private void seedDataTable()
         {
             _dt.Columns.AddRange(_wordList.Languages.Select(x => new DataColumn(x)).ToArray());
-            _wordList.List(0, addWord);
+            _wordList.List(0, (x) => _dt.Rows.Add(x));
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
