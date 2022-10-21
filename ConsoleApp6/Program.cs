@@ -2,6 +2,7 @@
 using Word;
 using ConsoleApp6.Options;
 using Word.Models;
+using System.Collections.Generic;
 
 try
 {
@@ -23,10 +24,9 @@ void RunPrintLists() => Array.ForEach(WordList.GetLists(), x => Console.WriteLin
 
 void RunNewlist(New opts)
 {
-    if (WordList.GetLists().Contains(opts.ListName)) throw new Exception("Listname already in use");
-    WordList newList = new WordList(opts.ListName, opts.Languages as string[]);
-    newList.Save();
-    RunAddEntry(new Add() { ListName = newList.Name });
+    if (WordList.GetLists().Contains(opts.ListName, StringComparer.OrdinalIgnoreCase)) throw new Exception("Listname already in use");
+    new WordList(opts.ListName, opts.Languages as string[]).Save();
+    RunAddEntry(new Add() { ListName = opts.ListName });
 }
 
 void RunAddEntry(Add opts)
@@ -55,10 +55,10 @@ void RunAddEntry(Add opts)
 void RunRemoveWord(Remove opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
-    int index = Array.FindIndex(list.Languages, (x) => String.Equals(x, opts.LangName, StringComparison.OrdinalIgnoreCase));
+    int langIndex = GetLanguageIndex(list.Languages, opts.LangName);
     foreach (string word in opts.Words)
     {
-        if(!list.Remove(index, word)) Console.WriteLine($"{word} doesnt exist");
+        if(!list.Remove(langIndex, word)) Console.WriteLine($"{word} doesnt exist");
     }
     list.Save();
 }
@@ -66,8 +66,7 @@ void RunRemoveWord(Remove opts)
 void RunPrintWords(Words opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
-    int langIndex = String.IsNullOrWhiteSpace(opts.sortByLanguage) ? 0 : Array.FindIndex(list.Languages, (x) => String.Equals(x, opts.sortByLanguage, StringComparison.OrdinalIgnoreCase));
-    if(langIndex == -1) throw new ArgumentException($"{opts.ListName} does not have language {opts.sortByLanguage}");
+    int langIndex = String.IsNullOrWhiteSpace(opts.sortByLanguage) ? 0 : GetLanguageIndex(list.Languages, opts.sortByLanguage);
     Console.WriteLine(String.Join('\t', list.Languages));
     list.List(langIndex, (x) => Console.WriteLine(String.Join('\t', x)));
 }
@@ -92,4 +91,10 @@ void RunPraticeWords(Practice opts)
         count++;
     }
     Console.WriteLine($"You praticed {count} with a successrate of {((double)success / count):P1}");
+}
+
+int GetLanguageIndex(string[] languages, string langName)
+{
+    int index = Array.FindIndex(languages, (x) => String.Equals(x, langName, StringComparison.OrdinalIgnoreCase));
+    return index == -1 ? throw new ArgumentException($"the list does not have language {langName}") : index;
 }
