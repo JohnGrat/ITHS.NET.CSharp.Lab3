@@ -40,7 +40,7 @@ namespace WinFormsApp1
 
         private void seedDataTable()
         {
-            _dt.Columns.AddRange(_wordList.Languages.Select(x => new DataColumn(x)).ToArray());
+            _dt.Columns.AddRange(_wordList.Languages.Select(language => new DataColumn(language)).ToArray());
             _wordList.List(0, (translations) => _dt.Rows.Add(translations));
         }
 

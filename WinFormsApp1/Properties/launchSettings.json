@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "WinFormsApp1": {
-      "commandName": "Project",
-      "commandLineArgs": "-remove lang5 swedish"
-    }
-  }
-}
