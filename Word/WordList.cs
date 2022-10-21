@@ -99,7 +99,7 @@ namespace Word
                 parser.SetDelimiters(";");
                 while (!parser.EndOfData)
                 {
-                    fields.Add(parser.ReadFields().Where(x => !String.IsNullOrWhiteSpace(x)).ToArray());
+                    fields.Add(parser.ReadFields()!.Where(x => !String.IsNullOrWhiteSpace(x)).ToArray());
                 }
                 return new WordList(fileName, fields.Skip(1).ToList(), fields.First());
             }

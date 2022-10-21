@@ -18,6 +18,12 @@ namespace WinFormsApp1
             listDataGridView.DataSource = dt;
             listDataGridView.CellEndEdit += ListView_CellEndEdit;
             listDataGridView.CellBeginEdit += ListDataGridView_CellBeginEdit;
+            listDataGridView.Validated += ListDataGridView_Validated;
+        }
+
+        private void ListDataGridView_Validated(object? sender, EventArgs e)
+        {
+            saveButton.Enabled = ValidateForm();
         }
 
         private void ListDataGridView_CellBeginEdit(object? sender, DataGridViewCellCancelEventArgs e)
@@ -44,23 +50,15 @@ namespace WinFormsApp1
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            if (ValidateForm())
+            _wordList.ClearWords();
+            DataGridViewRow[] dataGrid = listDataGridView.Rows.Cast<DataGridViewRow>().Select(x => x).ToArray();
+            foreach (DataGridViewRow item in dataGrid)
             {
-                _wordList.ClearWords();
-                DataGridViewRow[] dataGrid = listDataGridView.Rows.Cast<DataGridViewRow>().Select(x => x).ToArray();
-                foreach (DataGridViewRow item in dataGrid)
-                {
-                    string[] word = item.Cells.Cast<DataGridViewCell>().Select(x => (string)x.FormattedValue).ToArray();
-                    if (!word.Any(x => string.IsNullOrWhiteSpace(x))) _wordList.Add(word);
-                }
-                _wordList.Save();
-                MessageBox.Show("save successful");
+                string[] word = item.Cells.Cast<DataGridViewCell>().Select(x => (string)x.FormattedValue).ToArray();
+                if (!word.Any(x => string.IsNullOrWhiteSpace(x))) _wordList.Add(word);
             }
-            else
-            {
-                saveButton.Enabled = false;
-                MessageBox.Show("not saved invalid datagrid");
-            }
+            _wordList.Save();
+            MessageBox.Show("save successful");
         }
 
         private bool ValidateForm()
