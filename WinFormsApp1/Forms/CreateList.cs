@@ -19,7 +19,7 @@ namespace WinFormsApp1
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            new WordList(listNameBox.Text, _listColumn.Select(x => x).ToArray()).Save();
+            new WordList(listNameBox.Text, _listColumn.ToArray()).Save();
             _lists.Add(listNameBox.Text);
             Close();
         }
@@ -35,7 +35,7 @@ namespace WinFormsApp1
         {
             addColumnButton.Enabled = !string.IsNullOrWhiteSpace(listNameBox.Text);
             deleteColumnButton.Enabled = _listColumn.Any();
-            if (_lists.Any(s => s == listNameBox.Text)) warningLabel.Show();
+            if (_lists.Any(name => name == listNameBox.Text)) warningLabel.Show();
             else warningLabel.Hide();
             SubmitButton.Enabled = (_listColumn.Count > 1 && warningLabel.Visible == false && addColumnButton.Enabled == true);
         }

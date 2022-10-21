@@ -36,16 +36,16 @@ void RunAddEntry(Add opts)
     while (true)
     {
         Console.WriteLine("New word");
-        List<string> words = new List<string>();
-        foreach (string item in list.Languages)
+        List<string> translations = new List<string>();
+        foreach (string language in list.Languages)
         {
-            Console.WriteLine($"Write the the word in {item}");
+            Console.WriteLine($"Write the the word in {language}");
             string input = Console.ReadLine();
             if (String.IsNullOrWhiteSpace(input)) goto End;
-            words.Add(input);
+            translations.Add(input);
         }
         newWords++;
-        list.Add(words.ToArray());
+        list.Add(translations.ToArray());
     }
     End:
     Console.WriteLine($"You added {newWords} words");
@@ -94,6 +94,6 @@ void RunPraticeWords(Practice opts)
 
 int GetLanguageIndex(string[] languages, string langName)
 {
-    int index = Array.FindIndex(languages, (x) => String.Equals(x, langName, StringComparison.OrdinalIgnoreCase));
+    int index = Array.FindIndex(languages, (name) => String.Equals(name, langName, StringComparison.OrdinalIgnoreCase));
     return index == -1 ? throw new ArgumentException($"the list does not have language {langName}") : index;
 }

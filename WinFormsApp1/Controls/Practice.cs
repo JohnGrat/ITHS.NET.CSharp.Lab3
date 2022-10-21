@@ -11,11 +11,11 @@ namespace WinFormsApp1
         private int _questions;
         private string Score => $"You praticed {_questions} words with a successrate of {((double)_correct / _questions):P1}";
 
-        public Practice(WordList a)
+        public Practice(WordList wordlist)
         {
             InitializeComponent();
             Dock = DockStyle.Fill;
-            _wordList = a;
+            _wordList = wordlist;
             NextRound();
             textBox1.KeyDown += TextBox1_KeyDown;
         }
@@ -28,11 +28,11 @@ namespace WinFormsApp1
         void NextRound()
         {
             textBox1.Focus();
-            WordModel b = _wordList.GetWordToPractice();
-            _word = b;
-            string fromWord = b.Translations[b.FromLanguage];
-            string fromLang = _wordList.Languages[b.FromLanguage];
-            string toLang = _wordList.Languages[b.ToLanguage];
+            WordModel word = _wordList.GetWordToPractice();
+            _word = word;
+            string fromWord = word.Translations[word.FromLanguage];
+            string fromLang = _wordList.Languages[word.FromLanguage];
+            string toLang = _wordList.Languages[word.ToLanguage];
             questionLabel.Text = $"Translate the word {fromWord} from ({fromLang}) to ({toLang})";
         }
 

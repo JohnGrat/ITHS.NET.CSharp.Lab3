@@ -8,10 +8,10 @@ namespace WinFormsApp1
         private WordList _wordList;
         private DataTable _dt = new DataTable();
 
-        public Words(WordList a)
+        public Words(WordList wordlist)
         {
             InitializeComponent();
-            _wordList = a;
+            _wordList = wordlist;
             seedDataTable();
             listDataGridView.DataSource = _dt;
             listDataGridView.CellEndEdit += ListView_CellEndEdit;
@@ -41,17 +41,17 @@ namespace WinFormsApp1
         private void seedDataTable()
         {
             _dt.Columns.AddRange(_wordList.Languages.Select(x => new DataColumn(x)).ToArray());
-            _wordList.List(0, (x) => _dt.Rows.Add(x));
+            _wordList.List(0, (translations) => _dt.Rows.Add(translations));
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
             _wordList.ClearWords();
-            DataGridViewRow[] dataGrid = listDataGridView.Rows.Cast<DataGridViewRow>().Select(x => x).ToArray();
-            foreach (DataGridViewRow item in dataGrid)
+            DataGridViewRow[] dataGrid = listDataGridView.Rows.Cast<DataGridViewRow>().ToArray();
+            foreach (DataGridViewRow row in dataGrid)
             {
-                string[] word = item.Cells.Cast<DataGridViewCell>().Select(x => (string)x.FormattedValue).ToArray();
-                if (!word.Any(x => string.IsNullOrWhiteSpace(x))) _wordList.Add(word);
+                string[] translations = row.Cells.Cast<DataGridViewCell>().Select(cell => (string)cell.FormattedValue).ToArray();
+                if (!translations.Any(word => string.IsNullOrWhiteSpace(word))) _wordList.Add(translations);
             }
             _wordList.Save();
             saveButton.Enabled = false;
@@ -62,7 +62,7 @@ namespace WinFormsApp1
             bool hasErrorText = false;
             foreach (DataGridViewRow row in listDataGridView.Rows)
             {
-                if (row.Cells.Cast<DataGridViewCell>().All(x => string.IsNullOrWhiteSpace(x.Value as string))) continue;
+                if (row.Cells.Cast<DataGridViewCell>().All(cell => string.IsNullOrWhiteSpace(cell.Value as string))) continue;
                 foreach (DataGridViewCell cell in row.Cells)
                 {
                     if (string.IsNullOrWhiteSpace(cell.Value as string))

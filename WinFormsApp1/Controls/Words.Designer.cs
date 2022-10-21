@@ -44,7 +44,7 @@
             this.listDataGridView.Location = new System.Drawing.Point(0, 0);
             this.listDataGridView.Name = "listDataGridView";
             this.listDataGridView.RowTemplate.Height = 25;
-            this.listDataGridView.Size = new System.Drawing.Size(549, 524);
+            this.listDataGridView.Size = new System.Drawing.Size(552, 527);
             this.listDataGridView.TabIndex = 0;
             // 
             // saveButton
@@ -61,9 +61,9 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.warning);
             this.panel1.Controls.Add(this.saveButton);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 491);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(549, 33);
@@ -91,7 +91,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.listDataGridView);
             this.Name = "Words";
-            this.Size = new System.Drawing.Size(549, 524);
+            this.Size = new System.Drawing.Size(552, 527);
             ((System.ComponentModel.ISupportInitialize)(this.listDataGridView)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
