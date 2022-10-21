@@ -66,14 +66,10 @@ void RunRemoveWord(Remove opts)
 void RunPrintWords(Words opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
-    if (!String.IsNullOrWhiteSpace(opts.sortByLanguage))
-    {
-        if (!list.Languages.Contains(opts.sortByLanguage)) throw new ArgumentException($"{opts.ListName} does not have language {opts.sortByLanguage}");
-        int index = Array.FindIndex(list.Languages, (x) => String.Equals(x, opts.sortByLanguage, StringComparison.OrdinalIgnoreCase));
-        Console.WriteLine(String.Join('\t', list.Languages));
-        list.List(index, (x) => Console.WriteLine(String.Join('\t', x)));
-    }
-    else Console.WriteLine(list.ToString('\t'));
+    int langIndex = String.IsNullOrWhiteSpace(opts.sortByLanguage) ? 0 : Array.FindIndex(list.Languages, (x) => String.Equals(x, opts.sortByLanguage, StringComparison.OrdinalIgnoreCase));
+    if(langIndex == -1) throw new ArgumentException($"{opts.ListName} does not have language {opts.sortByLanguage}");
+    Console.WriteLine(String.Join('\t', list.Languages));
+    list.List(langIndex, (x) => Console.WriteLine(String.Join('\t', x)));
 }
 
 void RunCountWords(Count opts) => Console.WriteLine(WordList.LoadList(opts.ListName).Count);

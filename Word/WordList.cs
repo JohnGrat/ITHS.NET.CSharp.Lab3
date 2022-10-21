@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualBasic.FileIO;
+using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using Word.Models;
 
 namespace Word
@@ -76,7 +78,8 @@ namespace Word
 
         public void List(int sortByTranslation, Action<string[]> showTranslations)
         {
-            List<WordModel> SortedList = Words.OrderBy(x => x.Translations[sortByTranslation]).ToList();
+            CultureInfo culture = Words.Any(x => x.Translations.Any(word => new Regex(@"[äåöÄÅÖ]").IsMatch(word))) ? new CultureInfo("sv-SE") : CultureInfo.CurrentCulture;
+            List<WordModel> SortedList = Words.OrderBy(x => x.Translations[sortByTranslation], StringComparer.Create(culture, false)).ToList();
             foreach (WordModel item in SortedList) showTranslations?.Invoke(item.Translations);
         }
 
