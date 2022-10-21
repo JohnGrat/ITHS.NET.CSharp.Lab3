@@ -6,7 +6,7 @@ namespace WinFormsApp1
     public partial class Words : UserControl
     {
         private WordList _wordList;
-        private DataTable dt = new DataTable();
+        private DataTable _dt = new DataTable();
         public event Action<string[]> addWord;
 
         public Words(WordList a)
@@ -15,7 +15,7 @@ namespace WinFormsApp1
             _wordList = a;
             addWord += addWordHandler;
             seedDataTable();
-            listDataGridView.DataSource = dt;
+            listDataGridView.DataSource = _dt;
             listDataGridView.CellEndEdit += ListView_CellEndEdit;
             listDataGridView.CellBeginEdit += ListDataGridView_CellBeginEdit;
             listDataGridView.Validated += ListDataGridView_Validated;
@@ -23,7 +23,9 @@ namespace WinFormsApp1
 
         private void ListDataGridView_Validated(object? sender, EventArgs e)
         {
-            saveButton.Enabled = ValidateForm();
+            bool valid = ValidateForm();
+            saveButton.Enabled = valid;
+            warning.Visible = !valid;
         }
 
         private void ListDataGridView_CellBeginEdit(object? sender, DataGridViewCellCancelEventArgs e)
@@ -34,17 +36,17 @@ namespace WinFormsApp1
 
         private void addWordHandler(string[] obj)
         {         
-            dt.Rows.Add(obj);
+            _dt.Rows.Add(obj);
         }
 
         private void ListView_CellEndEdit(object? sender, DataGridViewCellEventArgs e)
         {
-            Warning.Hide();
+            warning.Hide();
         }
 
         private void seedDataTable()
         {
-            dt.Columns.AddRange(_wordList.Languages.Select(x => new DataColumn(x)).ToArray());
+            _dt.Columns.AddRange(_wordList.Languages.Select(x => new DataColumn(x)).ToArray());
             _wordList.List(0, addWord);
         }
 
@@ -58,7 +60,7 @@ namespace WinFormsApp1
                 if (!word.Any(x => string.IsNullOrWhiteSpace(x))) _wordList.Add(word);
             }
             _wordList.Save();
-            MessageBox.Show("save successful");
+            saveButton.Enabled = false;
         }
 
         private bool ValidateForm()

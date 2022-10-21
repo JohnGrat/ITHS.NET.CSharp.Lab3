@@ -31,7 +31,7 @@
             this.listDataGridView = new System.Windows.Forms.DataGridView();
             this.saveButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.Warning = new System.Windows.Forms.Label();
+            this.warning = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.listDataGridView)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -50,6 +50,7 @@
             // saveButton
             // 
             this.saveButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.saveButton.Enabled = false;
             this.saveButton.Location = new System.Drawing.Point(474, 0);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 33);
@@ -60,7 +61,7 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.Warning);
+            this.panel1.Controls.Add(this.warning);
             this.panel1.Controls.Add(this.saveButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 491);
@@ -68,20 +69,20 @@
             this.panel1.Size = new System.Drawing.Size(549, 33);
             this.panel1.TabIndex = 3;
             // 
-            // Warning
+            // warning
             // 
-            this.Warning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Warning.AutoSize = true;
-            this.Warning.ForeColor = System.Drawing.Color.Red;
-            this.Warning.Location = new System.Drawing.Point(352, 9);
-            this.Warning.Name = "Warning";
-            this.Warning.Size = new System.Drawing.Size(116, 15);
-            this.Warning.TabIndex = 3;
-            this.Warning.Text = "A cell is being edited";
-            this.Warning.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.Warning.Visible = false;
+            this.warning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.warning.AutoSize = true;
+            this.warning.ForeColor = System.Drawing.Color.Red;
+            this.warning.Location = new System.Drawing.Point(340, 9);
+            this.warning.Name = "warning";
+            this.warning.Size = new System.Drawing.Size(128, 15);
+            this.warning.TabIndex = 3;
+            this.warning.Text = "Datagrid contains error";
+            this.warning.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.warning.Visible = false;
             // 
-            // WordsView
+            // Words
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -89,7 +90,7 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.listDataGridView);
-            this.Name = "WordsView";
+            this.Name = "Words";
             this.Size = new System.Drawing.Size(549, 524);
             ((System.ComponentModel.ISupportInitialize)(this.listDataGridView)).EndInit();
             this.panel1.ResumeLayout(false);
@@ -103,6 +104,6 @@
         private DataGridView listDataGridView;
         private Button saveButton;
         private Panel panel1;
-        private Label Warning;
+        private Label warning;
     }
 }
