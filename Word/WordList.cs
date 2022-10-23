@@ -16,11 +16,11 @@ namespace Word
 
         public event Action<int>? SaveSuccess;
 
-        public string ToString(char delimiter, int sortByIndex = 0)
+        public string ToString(char delimiter = '\0', int sortByIndex = 0, int padding = 0)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(String.Join(delimiter, Languages.Append("")).ToUpper());
-            List(sortByIndex, translations => sb.AppendLine(String.Join(delimiter, translations.Append(""))));
+            sb.AppendLine(String.Join(delimiter, Languages.Append("").Select(field => field.PadRight(padding).ToUpper()).ToArray()));
+            List(sortByIndex, translations => sb.AppendLine(String.Join(delimiter, translations.Append("").Select(item => item.PadRight(padding)).ToArray())));
             return sb.ToString().Trim();
         }
         
@@ -75,8 +75,8 @@ namespace Word
         public void List(int sortByTranslation, Action<string[]> showTranslations)
         {
             CultureInfo culture = _words.Any(word => word.Translations.Any(word => new Regex(@"[äåöÄÅÖ]").IsMatch(word))) ? new CultureInfo("sv-SE") : CultureInfo.CurrentCulture;
-            List<WordModel> SortedList = _words.OrderBy(word => word.Translations[sortByTranslation], StringComparer.Create(culture, false)).ToList();
-            foreach (WordModel word in SortedList) showTranslations?.Invoke(word.Translations);
+            WordModel[] SortedArray = _words.OrderBy(word => word.Translations[sortByTranslation], StringComparer.Create(culture, false)).ToArray();
+            Array.ForEach(SortedArray, (WordModel word) =>  showTranslations?.Invoke(word.Translations)); 
         }
 
         public WordModel GetWordToPractice()

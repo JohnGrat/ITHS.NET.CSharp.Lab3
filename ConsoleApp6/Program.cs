@@ -23,7 +23,8 @@ void RunPrintLists() => Array.ForEach(WordList.GetLists(), x => Console.WriteLin
 
 void RunNewlist(New opts)
 {
-    if (WordList.GetLists().Contains(opts.ListName, StringComparer.OrdinalIgnoreCase)) throw new Exception("Listname already in use");
+    if (WordList.GetLists().Contains(opts.ListName, StringComparer.OrdinalIgnoreCase)) 
+        throw new Exception("Listname already in use");
     new WordList(opts.ListName, opts.Languages as string[]).Save();
     RunAddEntry(new Add() { ListName = opts.ListName });
 }
@@ -55,10 +56,8 @@ void RunRemoveWord(Remove opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int langIndex = GetLanguageIndex(list.Languages, opts.LangName);
-    foreach (string word in opts.Words)
-    {
-        if(!list.Remove(langIndex, word)) Console.WriteLine($"{word} doesnt exist");
-    }
+    Array.ForEach(opts.Words.ToArray(), word => 
+    Console.WriteLine(list.Remove(langIndex, word) ? $"{word} removed" : $"{word} doesnt exist"));
     list.Save();
 }
 
@@ -66,7 +65,7 @@ void RunPrintWords(Words opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int langIndex = String.IsNullOrWhiteSpace(opts.sortByLanguage) ? 0 : GetLanguageIndex(list.Languages, opts.sortByLanguage);
-    Console.WriteLine(list.ToString('\t', langIndex));
+    Console.WriteLine(list.ToString(sortByIndex: langIndex, padding: 15));
 }
 
 void RunCountWords(Count opts) => Console.WriteLine(WordList.LoadList(opts.ListName).Count);
