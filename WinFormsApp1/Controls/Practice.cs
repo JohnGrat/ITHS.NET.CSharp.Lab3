@@ -56,6 +56,7 @@ namespace WinFormsApp1
 
         private void correct()
         {
+            if (String.IsNullOrWhiteSpace(textBox1.Text)) return;
             string toWord = _word.Translations[_word.ToLanguage];
             if (String.Equals(textBox1.Text, toWord, StringComparison.CurrentCultureIgnoreCase)) _correct++;
             else MessageBox.Show($"Wrong the correct answear is: {toWord}");
