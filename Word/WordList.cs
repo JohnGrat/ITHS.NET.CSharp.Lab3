@@ -20,7 +20,7 @@ namespace Word
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(String.Join(delimiter, Languages.Append("").Select(field => field.PadRight(padding).ToUpper()).ToArray()));
-            List(sortByIndex, translations => sb.AppendLine(String.Join(delimiter, translations.Append("").Select(item => item.PadRight(padding)).ToArray())));
+            List(sortByIndex, translations => sb.AppendLine(String.Join(delimiter, translations.Append("").Select(field => field.PadRight(padding)).ToArray())));
             return sb.ToString().Trim();
         }
         
@@ -75,8 +75,8 @@ namespace Word
         public void List(int sortByTranslation, Action<string[]> showTranslations)
         {
             CultureInfo culture = _words.Any(word => word.Translations.Any(word => new Regex(@"[äåöÄÅÖ]").IsMatch(word))) ? new CultureInfo("sv-SE") : CultureInfo.CurrentCulture;
-            WordModel[] SortedArray = _words.OrderBy(word => word.Translations[sortByTranslation], StringComparer.Create(culture, false)).ToArray();
-            Array.ForEach(SortedArray, (WordModel word) =>  showTranslations?.Invoke(word.Translations)); 
+            WordModel[] sorted = _words.OrderBy(word => word.Translations[sortByTranslation], StringComparer.Create(culture, false)).ToArray();
+            Array.ForEach(sorted, (WordModel word) =>  showTranslations?.Invoke(word.Translations)); 
         }
 
         public WordModel GetWordToPractice()
