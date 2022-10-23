@@ -9,7 +9,7 @@ namespace WinFormsApp1
         private WordModel _word;
         private int _correct;
         private int _questions;
-        private string Score => $"You praticed {_questions} words with a successrate of {((double)_correct / _questions):P1}";
+        private string _score => $"You praticed {_questions} words with a successrate of {((double)_correct / _questions):P1}";
 
         public Practice(WordList wordlist)
         {
@@ -40,7 +40,7 @@ namespace WinFormsApp1
         {
             _correct = 0;
             _questions = 0;
-            scoreLabel.Text = Score;
+            scoreLabel.Text = _score;
             NextRound();
         }
 
@@ -62,7 +62,7 @@ namespace WinFormsApp1
             else MessageBox.Show($"Wrong the correct answear is: {toWord}");
             _questions++;
             textBox1.Text = "";
-            scoreLabel.Text = Score;
+            scoreLabel.Text = _score;
             NextRound();
         }
     }
