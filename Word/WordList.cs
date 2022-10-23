@@ -1,8 +1,6 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 using Word.Models;
 
 namespace Word
