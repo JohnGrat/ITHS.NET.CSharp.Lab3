@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using Word.Models;
 
 namespace Word
@@ -20,8 +21,8 @@ namespace Word
         public string ToString(char delimiter, int sortByIndex = 0)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(String.Join(delimiter, Languages).ToUpper());
-            List(sortByIndex, (translations => sb.AppendLine(String.Join(delimiter, translations))));
+            sb.AppendLine(String.Join(delimiter, Languages.Append("")).ToUpper());
+            List(sortByIndex, translations => sb.AppendLine(String.Join(delimiter, translations.Append(""))));
             return sb.ToString().Trim();
         }
         
@@ -92,17 +93,11 @@ namespace Word
 
         private static WordList ParseFile(string fileName)
         {
-            using (TextFieldParser parser = new TextFieldParser(GetFilePath(fileName)))
-            {
-                List<string[]> fields = new List<string[]>();
-                parser.TextFieldType = FieldType.Delimited;
-                parser.SetDelimiters(";");
-                while (!parser.EndOfData)
-                {
-                    fields.Add(parser.ReadFields()!.Where(field => !String.IsNullOrWhiteSpace(field)).ToArray());
-                }
-                return new WordList(fileName, fields.Skip(1).ToList(), fields.First());
-            }
+            char delimiter = ';';
+            string[] file = File.ReadAllLines(GetFilePath(fileName));
+            string[] headers = file.FirstOrDefault().Split(delimiter).SkipLast(1).ToArray();
+            List<string[]> fields = file.Skip(1).Select(row => row.Split(delimiter).SkipLast(1).ToArray()).ToList();
+            return new WordList(fileName, fields, headers);
         }
     }
 }
