@@ -1,9 +1,8 @@
 ﻿using CommandLine;
 
-namespace ConsoleApp6.Options
+namespace ConsoleApp6.Options;
+
+[Verb("-lists")]
+internal class Lists
 {
-    [Verb("-lists")]
-    internal class Lists
-    {
-    }
 }

@@ -58,8 +58,8 @@ namespace Word
         public void Add(params string[] translations)
         {
             if (Languages!.Count() != translations.Count()) new ArgumentException("Missing translations");
-            string[] translationsTrimed = translations.Select(word => word.Trim()).ToArray();
-            _words.Add(new WordModel(translationsTrimed));
+            string[] translationsTrimmed = translations.Select(word => word.Trim()).ToArray();
+            _words.Add(new WordModel(translationsTrimmed));
         }
 
         public bool Remove(int translation, string name)
