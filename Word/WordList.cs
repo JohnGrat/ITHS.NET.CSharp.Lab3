@@ -81,7 +81,7 @@ public class WordList
     {
         int toBeDeleted = _words.RemoveAll(word =>
             string.Equals(word.Translations[translation], name, StringComparison.OrdinalIgnoreCase));
-        return toBeDeleted > 0 ? true : false;
+        return toBeDeleted > 0;
     }
 
     public void ClearWords()
