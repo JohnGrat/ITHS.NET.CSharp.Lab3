@@ -1,35 +1,35 @@
 ﻿using CommandLine;
-using Word;
 using ConsoleApp6.Options;
+using Word;
 using Word.Models;
 
 try
 {
     ParserResult<object> result = Parser.Default.ParseArguments<New, Lists, Add, Remove, Count, Words, Practice>(args);
-    result.WithParsed<Lists>(o => RunPrintLists());
-    result.WithParsed<New>(o => RunNewlist(o));
-    result.WithParsed<Add>(o => RunAddEntry(o));
-    result.WithParsed<Remove>(o => RunRemoveWord(o));
-    result.WithParsed<Count>(o => RunCountWords(o));
-    result.WithParsed<Words>(o => RunPrintWords(o));
-    result.WithParsed<Practice>(o => RunPraticeWords(o));
+    result.WithParsed<Lists>(o => PrintLists());
+    result.WithParsed<New>(o => NewList(o));
+    result.WithParsed<Add>(o => AddEntry(o));
+    result.WithParsed<Remove>(o => RemoveWord(o));
+    result.WithParsed<Count>(o => CountWords(o));
+    result.WithParsed<Words>(o => PrintWords(o));
+    result.WithParsed<Practice>(o => PracticeWords(o));
 }
 catch (Exception e)
 {
     Console.WriteLine(e.Message);
 }
 
-void RunPrintLists() => Array.ForEach(WordList.GetLists(), x => Console.WriteLine(x));
+void PrintLists() => Array.ForEach(WordList.GetLists(), name => Console.WriteLine(name));
 
-void RunNewlist(New opts)
+void NewList(New opts)
 {
     if (WordList.GetLists().Contains(opts.ListName, StringComparer.OrdinalIgnoreCase)) 
-        throw new Exception("Listname already in use");
+        throw new Exception("Name already in use");
     new WordList(opts.ListName, opts.Languages as string[]).Save();
-    RunAddEntry(new Add() { ListName = opts.ListName });
+    AddEntry(new Add() { ListName = opts.ListName });
 }
 
-void RunAddEntry(Add opts)
+void AddEntry(Add opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int newWords = 0;
@@ -52,25 +52,25 @@ void RunAddEntry(Add opts)
     list.Save();
 }
 
-void RunRemoveWord(Remove opts)
+void RemoveWord(Remove opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int langIndex = GetLanguageIndex(list.Languages, opts.LangName);
     Array.ForEach(opts.Words.ToArray(), word => 
-    Console.WriteLine(list.Remove(langIndex, word) ? $"{word} removed" : $"{word} doesnt exist"));
+    Console.WriteLine(list.Remove(langIndex, word) ? $"{word} removed" : $"{word} doesn't exist"));
     list.Save();
 }
 
-void RunPrintWords(Words opts)
+void PrintWords(Words opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int langIndex = String.IsNullOrWhiteSpace(opts.sortByLanguage) ? 0 : GetLanguageIndex(list.Languages, opts.sortByLanguage);
     Console.WriteLine(list.ToString(sortByIndex: langIndex, padding: 15));
 }
 
-void RunCountWords(Count opts) => Console.WriteLine(WordList.LoadList(opts.ListName).Count);
+void CountWords(Count opts) => Console.WriteLine(WordList.LoadList(opts.ListName).Count);
 
-void RunPraticeWords(Practice opts)
+void PracticeWords(Practice opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int count = 0, success = 0;
@@ -78,16 +78,16 @@ void RunPraticeWords(Practice opts)
     {
         WordModel word = list.GetWordToPractice();
         string question = word.Translations[word.FromLanguage];
-        string answear = word.Translations[word.ToLanguage];
+        string answer = word.Translations[word.ToLanguage];
         Console.WriteLine($"Translate this word to {list.Languages[word.ToLanguage]} from {list.Languages[word.FromLanguage]}");
         Console.WriteLine($"the word is {question}");
         string input = Console.ReadLine();
         if (String.IsNullOrWhiteSpace(input)) break;
-        if(String.Equals(input, answear, StringComparison.OrdinalIgnoreCase)) success++;
-        else Console.WriteLine($"Wrong the correct answear is {answear}");
+        if(String.Equals(input, answer, StringComparison.OrdinalIgnoreCase)) success++;
+        else Console.WriteLine($"Wrong the correct answer is {answer}");
         count++;
     }
-    Console.WriteLine($"You praticed {count} with a successrate of {((double)success / count):P1}");
+    Console.WriteLine($"You practiced {count} with a success rate of {((double)success / count):P1}");
 }
 
 int GetLanguageIndex(string[] languages, string langName)
