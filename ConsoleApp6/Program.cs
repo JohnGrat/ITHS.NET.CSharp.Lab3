@@ -19,14 +19,17 @@ catch (Exception e)
     Console.WriteLine(e.Message);
 }
 
-void PrintLists() => Array.ForEach(WordList.GetLists(), name => Console.WriteLine(name));
+void PrintLists()
+{
+    Array.ForEach(WordList.GetLists(), name => Console.WriteLine(name));
+}
 
 void NewList(New opts)
 {
-    if (WordList.GetLists().Contains(opts.ListName, StringComparer.OrdinalIgnoreCase)) 
+    if (WordList.GetLists().Contains(opts.ListName, StringComparer.OrdinalIgnoreCase))
         throw new Exception("Name already in use");
     new WordList(opts.ListName, opts.Languages as string[]).Save();
-    AddEntry(new Add() { ListName = opts.ListName });
+    AddEntry(new Add { ListName = opts.ListName });
 }
 
 void AddEntry(Add opts)
@@ -41,12 +44,14 @@ void AddEntry(Add opts)
         {
             Console.WriteLine($"Write the the word in {language}");
             string input = Console.ReadLine();
-            if (String.IsNullOrWhiteSpace(input)) goto End;
+            if (string.IsNullOrWhiteSpace(input)) goto End;
             translations.Add(input);
         }
+
         newWords++;
         list.Add(translations.ToArray());
     }
+
     End:
     Console.WriteLine($"You added {newWords} words");
     list.Save();
@@ -56,19 +61,24 @@ void RemoveWord(Remove opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
     int langIndex = GetLanguageIndex(list.Languages, opts.LangName);
-    Array.ForEach(opts.Words.ToArray(), word => 
-    Console.WriteLine(list.Remove(langIndex, word) ? $"{word} removed" : $"{word} doesn't exist"));
+    Array.ForEach(opts.Words.ToArray(), word =>
+        Console.WriteLine(list.Remove(langIndex, word) ? $"{word} removed" : $"{word} doesn't exist"));
     list.Save();
 }
 
 void PrintWords(Words opts)
 {
     WordList list = WordList.LoadList(opts.ListName);
-    int langIndex = String.IsNullOrWhiteSpace(opts.sortByLanguage) ? 0 : GetLanguageIndex(list.Languages, opts.sortByLanguage);
+    int langIndex = string.IsNullOrWhiteSpace(opts.sortByLanguage)
+        ? 0
+        : GetLanguageIndex(list.Languages, opts.sortByLanguage);
     Console.WriteLine(list.ToString(sortByIndex: langIndex, padding: 15));
 }
 
-void CountWords(Count opts) => Console.WriteLine(WordList.LoadList(opts.ListName).Count);
+void CountWords(Count opts)
+{
+    Console.WriteLine(WordList.LoadList(opts.ListName).Count);
+}
 
 void PracticeWords(Practice opts)
 {
@@ -79,19 +89,21 @@ void PracticeWords(Practice opts)
         WordModel word = list.GetWordToPractice();
         string question = word.Translations[word.FromLanguage];
         string answer = word.Translations[word.ToLanguage];
-        Console.WriteLine($"Translate this word to {list.Languages[word.ToLanguage]} from {list.Languages[word.FromLanguage]}");
+        Console.WriteLine(
+            $"Translate this word to {list.Languages[word.ToLanguage]} from {list.Languages[word.FromLanguage]}");
         Console.WriteLine($"the word is {question}");
         string input = Console.ReadLine();
-        if (String.IsNullOrWhiteSpace(input)) break;
-        if(String.Equals(input, answer, StringComparison.OrdinalIgnoreCase)) success++;
+        if (string.IsNullOrWhiteSpace(input)) break;
+        if (string.Equals(input, answer, StringComparison.OrdinalIgnoreCase)) success++;
         else Console.WriteLine($"Wrong the correct answer is {answer}");
         count++;
     }
-    Console.WriteLine($"You practiced {count} with a success rate of {((double)success / count):P1}");
+
+    Console.WriteLine($"You practiced {count} with a success rate of {(double)success / count:P1}");
 }
 
 int GetLanguageIndex(string[] languages, string langName)
 {
-    int index = Array.FindIndex(languages, (name) => String.Equals(name, langName, StringComparison.OrdinalIgnoreCase));
+    int index = Array.FindIndex(languages, name => string.Equals(name, langName, StringComparison.OrdinalIgnoreCase));
     return index == -1 ? throw new ArgumentException($"the list does not have language {langName}") : index;
 }
