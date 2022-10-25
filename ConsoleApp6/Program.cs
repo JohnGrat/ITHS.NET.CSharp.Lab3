@@ -1,7 +1,6 @@
 ﻿using CommandLine;
 using ConsoleApp6.Options;
 using Word;
-using Word.Models;
 
 try
 {
@@ -34,45 +33,45 @@ void NewList(New opts)
 
 void AddEntry(Add opts)
 {
-    WordList list = WordList.LoadList(opts.ListName);
-    int newWords = 0;
+    var selectedList = WordList.LoadList(opts.ListName);
+    var newWordsCounter = 0;
     while (true)
     {
         Console.WriteLine("New word");
-        List<string> translations = new List<string>();
-        foreach (string language in list.Languages)
+        var translations = new List<string>();
+        foreach (var language in selectedList.Languages)
         {
             Console.WriteLine($"Write the the word in {language}");
-            string input = Console.ReadLine();
+            var input = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(input)) goto End;
             translations.Add(input);
         }
 
-        newWords++;
-        list.Add(translations.ToArray());
+        newWordsCounter++;
+        selectedList.Add(translations.ToArray());
     }
 
     End:
-    Console.WriteLine($"You added {newWords} words");
-    list.Save();
+    Console.WriteLine($"You added {newWordsCounter} words");
+    selectedList.Save();
 }
 
 void RemoveWord(Remove opts)
 {
-    WordList list = WordList.LoadList(opts.ListName);
-    int langIndex = GetLanguageIndex(list.Languages, opts.LangName);
+    var selectedList = WordList.LoadList(opts.ListName);
+    var langIndex = GetLanguageIndex(selectedList.Languages, opts.LangName);
     Array.ForEach(opts.Words.ToArray(), word =>
-        Console.WriteLine(list.Remove(langIndex, word) ? $"{word} removed" : $"{word} doesn't exist"));
-    list.Save();
+        Console.WriteLine(selectedList.Remove(langIndex, word) ? $"{word} removed" : $"{word} doesn't exist"));
+    selectedList.Save();
 }
 
 void PrintWords(Words opts)
 {
-    WordList list = WordList.LoadList(opts.ListName);
-    int langIndex = string.IsNullOrWhiteSpace(opts.sortByLanguage)
+    var selectedList = WordList.LoadList(opts.ListName);
+    var langIndex = string.IsNullOrWhiteSpace(opts.sortByLanguage)
         ? 0
-        : GetLanguageIndex(list.Languages, opts.sortByLanguage);
-    Console.WriteLine(list.ToString(langIndex, true));
+        : GetLanguageIndex(selectedList.Languages, opts.sortByLanguage);
+    Console.WriteLine(selectedList.ToString(langIndex, true));
 }
 
 void CountWords(Count opts)
@@ -82,28 +81,28 @@ void CountWords(Count opts)
 
 void PracticeWords(Practice opts)
 {
-    WordList list = WordList.LoadList(opts.ListName);
-    int count = 0, success = 0;
+    var selectedList = WordList.LoadList(opts.ListName);
+    int questionCounter = 0, successCounter = 0;
     while (true)
     {
-        WordModel word = list.GetWordToPractice();
-        string question = word.Translations[word.FromLanguage];
-        string answer = word.Translations[word.ToLanguage];
+        var word = selectedList.GetWordToPractice();
+        var question = word.Translations[word.FromLanguage];
+        var answer = word.Translations[word.ToLanguage];
         Console.WriteLine(
-            $"Translate this word to {list.Languages[word.ToLanguage]} from {list.Languages[word.FromLanguage]}");
+            $"Translate this word to {selectedList.Languages[word.ToLanguage]} from {selectedList.Languages[word.FromLanguage]}");
         Console.WriteLine($"the word is {question}");
-        string input = Console.ReadLine();
+        var input = Console.ReadLine();
         if (string.IsNullOrWhiteSpace(input)) break;
-        if (string.Equals(input, answer, StringComparison.OrdinalIgnoreCase)) success++;
+        if (string.Equals(input, answer, StringComparison.OrdinalIgnoreCase)) successCounter++;
         else Console.WriteLine($"Wrong the correct answer is {answer}");
-        count++;
+        questionCounter++;
     }
 
-    Console.WriteLine($"You practiced {count} with a success rate of {(double)success / count:P1}");
+    Console.WriteLine($"You practiced {questionCounter} with a success rate of {(double)successCounter / questionCounter:P1}");
 }
 
 int GetLanguageIndex(string[] languages, string langName)
 {
-    int index = Array.FindIndex(languages, name => string.Equals(name, langName, StringComparison.OrdinalIgnoreCase));
+    var index = Array.FindIndex(languages, name => string.Equals(name, langName, StringComparison.OrdinalIgnoreCase));
     return index == -1 ? throw new ArgumentException($"the list does not have language {langName}") : index;
 }

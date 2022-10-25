@@ -9,9 +9,9 @@ public class WordList
 {
     static WordList()
     {
-        string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string folderName = "Word";
-        _filePath = Path.Combine(local, folderName);
+        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var folderName = "Word";
+        _filePath = Path.Combine(appDataPath, folderName);
         if (!Directory.Exists(_filePath)) Directory.CreateDirectory(_filePath);
     }
 
@@ -53,15 +53,15 @@ public class WordList
 
     public string ToString(int sortByIndex = 0, bool usePadding = false)
     {
-        char delimiter = usePadding ? '\0' : ';';
-        int padding = usePadding ? GetLongestStringLength() + 1 : 0;
-        StringBuilder sb = new StringBuilder();
-        sb.AppendLine(string.Join(delimiter,
+        var delimiter = usePadding ? '\0' : ';';
+        var padding = usePadding ? GetLongestStringLength() + 1 : 0;
+        var dataTable = new StringBuilder();
+        dataTable.AppendLine(string.Join(delimiter,
             Languages.Append("").Select(field => field.PadRight(padding).ToUpper()).ToArray()));
         List(sortByIndex,
-            translations => sb.AppendLine(string.Join(delimiter,
+            translations => dataTable.AppendLine(string.Join(delimiter,
                 translations.Append("").Select(field => field.PadRight(padding)).ToArray())));
-        return sb.ToString().Trim();
+        return dataTable.ToString().Trim();
     }
 
     public static string[] GetLists()
@@ -83,13 +83,13 @@ public class WordList
     public void Add(params string[] translations)
     {
         if (translations.Length < Languages.Length) new ArgumentException("Missing translations");
-        string[] translationsTrimmed = translations.Select(word => word.Trim()).ToArray();
+        var translationsTrimmed = translations.Select(word => word.Trim()).ToArray();
         _words.Add(new WordModel(translationsTrimmed));
     }
 
     public bool Remove(int translation, string name)
     {
-        int toBeDeleted = _words.RemoveAll(word =>
+        var toBeDeleted = _words.RemoveAll(word =>
             string.Equals(word.Translations[translation], name, StringComparison.OrdinalIgnoreCase));
         return toBeDeleted > 0;
     }
@@ -101,19 +101,19 @@ public class WordList
 
     public void List(int sortByTranslation, Action<string[]> showTranslations)
     {
-        CultureInfo culture = _words.Any(word => word.Translations.Any(word => new Regex(@"[äåöÄÅÖ]").IsMatch(word)))
+        var culture = _words.Any(word => word.Translations.Any(word => new Regex(@"[äåöÄÅÖ]").IsMatch(word)))
             ? new CultureInfo("sv-SE")
             : CultureInfo.CurrentCulture;
-        WordModel[] sorted = _words
+        var wordsSorted = _words
             .OrderBy(word => word.Translations[sortByTranslation], StringComparer.Create(culture, false)).ToArray();
-        Array.ForEach(sorted, word => showTranslations?.Invoke(word.Translations));
+        Array.ForEach(wordsSorted, word => showTranslations?.Invoke(word.Translations));
     }
 
     public WordModel GetWordToPractice()
     {
-        Random rnd = new Random();
-        int randomNumber = rnd.Next(_words.Count);
-        int[] randomIndex = _words[randomNumber].Translations.Select((word, index) => index)
+        var rnd = new Random();
+        var randomNumber = rnd.Next(_words.Count);
+        var randomIndex = _words[randomNumber].Translations.Select((word, index) => index)
             .OrderBy(index => rnd.Next()).Take(2).ToArray();
         return new WordModel(randomIndex[0], randomIndex[1], _words[randomNumber].Translations);
     }
@@ -125,10 +125,10 @@ public class WordList
 
     private static WordList ParseFile(string fileName)
     {
-        char delimiter = ';';
-        string[] file = File.ReadAllLines(GetFilePath(fileName));
-        string[] headers = file.FirstOrDefault().Split(delimiter).SkipLast(1).ToArray();
-        List<string[]> fields = file.Skip(1).Select(row => row.Split(delimiter).SkipLast(1).ToArray()).ToList();
+        var delimiter = ';';
+        var file = File.ReadAllLines(GetFilePath(fileName));
+        var headers = file.FirstOrDefault().Split(delimiter).SkipLast(1).ToArray();
+        var fields = file.Skip(1).Select(row => row.Split(delimiter).SkipLast(1).ToArray()).ToList();
         return new WordList(fileName, fields, headers);
     }
 }

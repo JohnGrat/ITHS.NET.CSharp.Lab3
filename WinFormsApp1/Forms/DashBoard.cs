@@ -24,15 +24,15 @@ public partial class DashBoard : Form
     private void wordsToolStripMenuItem_Click(object sender, EventArgs e)
     {
         panel1.Controls.Clear();
-        Words c = new Words(_wordList) { Dock = DockStyle.Fill };
-        panel1.Controls.Add(c);
+        var dataGridView = new Words(_wordList) { Dock = DockStyle.Fill };
+        panel1.Controls.Add(dataGridView);
     }
 
     private void practiceToolStripMenuItem_Click(object sender, EventArgs e)
     {
         panel1.Controls.Clear();
-        Practice c = new Practice(_wordList);
-        panel1.Controls.Add(c);
+        var praticeView = new Practice(_wordList);
+        panel1.Controls.Add(praticeView);
     }
 
     private void exitToolStripMenuItem_Click(object sender, EventArgs e)

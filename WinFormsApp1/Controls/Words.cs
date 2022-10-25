@@ -21,7 +21,7 @@ public partial class Words : UserControl
 
     private void ListDataGridView_Validated(object? sender, EventArgs e)
     {
-        bool valid = ValidateForm();
+        var valid = ValidateForm();
         saveButton.Enabled = valid;
         warning.Visible = !valid;
     }
@@ -47,10 +47,10 @@ public partial class Words : UserControl
     private void SaveButton_Click(object sender, EventArgs e)
     {
         _wordList.ClearWords();
-        DataGridViewRow[] dataGrid = listDataGridView.Rows.Cast<DataGridViewRow>().ToArray();
-        foreach (DataGridViewRow row in dataGrid)
+        var dataGrid = listDataGridView.Rows.Cast<DataGridViewRow>().ToArray();
+        foreach (var row in dataGrid)
         {
-            string[] translations = row.Cells.Cast<DataGridViewCell>().Select(cell => (string)cell.FormattedValue)
+            var translations = row.Cells.Cast<DataGridViewCell>().Select(cell => (string)cell.FormattedValue)
                 .ToArray();
             if (!translations.Any(word => string.IsNullOrWhiteSpace(word))) _wordList.Add(translations);
         }
@@ -61,7 +61,7 @@ public partial class Words : UserControl
 
     private bool ValidateForm()
     {
-        bool hasErrorText = false;
+        var hasErrorText = false;
         foreach (DataGridViewRow row in listDataGridView.Rows)
         {
             if (row.Cells.Cast<DataGridViewCell>()

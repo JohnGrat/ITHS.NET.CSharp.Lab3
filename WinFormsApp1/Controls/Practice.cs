@@ -30,11 +30,11 @@ public partial class Practice : UserControl
     private void NextRound()
     {
         textBox1.Focus();
-        WordModel word = _wordList.GetWordToPractice();
+        var word = _wordList.GetWordToPractice();
         _word = word;
-        string fromWord = word.Translations[word.FromLanguage];
-        string fromLang = _wordList.Languages[word.FromLanguage];
-        string toLang = _wordList.Languages[word.ToLanguage];
+        var fromWord = word.Translations[word.FromLanguage];
+        var fromLang = _wordList.Languages[word.FromLanguage];
+        var toLang = _wordList.Languages[word.ToLanguage];
         questionLabel.Text = $"Translate the word {fromWord} from ({fromLang}) to ({toLang})";
     }
 
@@ -59,7 +59,7 @@ public partial class Practice : UserControl
     private void correct()
     {
         if (string.IsNullOrWhiteSpace(textBox1.Text)) return;
-        string toWord = _word.Translations[_word.ToLanguage];
+        var toWord = _word.Translations[_word.ToLanguage];
         if (string.Equals(textBox1.Text, toWord, StringComparison.CurrentCultureIgnoreCase)) _correct++;
         else MessageBox.Show($"Wrong the correct answear is: {toWord}");
         _questions++;

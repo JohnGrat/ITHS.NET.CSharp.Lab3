@@ -32,7 +32,7 @@ public partial class ChooseList : Form
         openButton.Enabled = !string.IsNullOrEmpty(directoryListBox.Text);
         if (deleteButton.Enabled)
         {
-            WordList selected = WordList.LoadList(directoryListBox.Text);
+            var selected = WordList.LoadList(directoryListBox.Text);
             columnListBox.DataSource = selected.Languages;
             wordsCountLabel.Text = $"Words: {selected.Count}";
             label2.Text = $"Languages: {selected.Languages.Count()}";
@@ -53,7 +53,7 @@ public partial class ChooseList : Form
     private void createButton_Click(object sender, EventArgs e)
     {
         Hide();
-        CreateList form = new CreateList(_lists);
+        var form = new CreateList(_lists);
         form.Closed += (s, args) => { Show(); };
         form.StartPosition = FormStartPosition.CenterScreen;
         form.Show();
@@ -73,7 +73,7 @@ public partial class ChooseList : Form
     private void OpenList()
     {
         Hide();
-        DashBoard form = new DashBoard(WordList.LoadList(directoryListBox.Text));
+        var form = new DashBoard(WordList.LoadList(directoryListBox.Text));
         form.StartPosition = FormStartPosition.CenterScreen;
         form.Closed += (s, args) => Show();
         form.Show();

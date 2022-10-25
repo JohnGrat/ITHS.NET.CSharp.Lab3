@@ -25,7 +25,7 @@ public partial class CreateList : Form
 
     private void addColumnButton_Click(object sender, EventArgs e)
     {
-        AddColumn form = new AddColumn(_listColumn);
+        var form = new AddColumn(_listColumn);
         form.Location = new Point(Location.X + 200, Location.Y + 100);
         form.ShowDialog();
     }
