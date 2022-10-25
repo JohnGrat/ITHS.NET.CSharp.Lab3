@@ -5,10 +5,10 @@ namespace WinFormsApp1;
 
 public partial class Practice : UserControl
 {
+    private readonly WordList _wordList;
     private int _correct;
     private int _questions;
     private WordModel _word;
-    private readonly WordList _wordList;
 
     public Practice(WordList wordlist)
     {

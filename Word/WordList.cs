@@ -36,6 +36,14 @@ public class WordList
 
     public int Count => _words.Count();
 
+    private int GetLongestStringLength()
+    {
+        var strings = new List<string>();
+        strings.AddRange(Languages);
+        strings.AddRange(_words.SelectMany(word => word.Translations));
+        return strings.Max(@string => @string.Length);
+    }
+
     private static string GetFilePath(string name)
     {
         return _filePath + "\\" + name + ".dat";
@@ -43,8 +51,10 @@ public class WordList
 
     public event Action<int>? SaveSuccess;
 
-    public string ToString(char delimiter = '\0', int sortByIndex = 0, int padding = 0)
+    public string ToString(int sortByIndex = 0, bool usePadding = false)
     {
+        char delimiter = usePadding ? '\0' : ';';
+        int padding = usePadding ? GetLongestStringLength() + 1 : 0;
         StringBuilder sb = new StringBuilder();
         sb.AppendLine(string.Join(delimiter,
             Languages.Append("").Select(field => field.PadRight(padding).ToUpper()).ToArray()));
@@ -66,7 +76,7 @@ public class WordList
 
     public void Save()
     {
-        File.WriteAllText(GetFilePath(Name), ToString(';'));
+        File.WriteAllText(GetFilePath(Name), ToString());
         SaveSuccess?.Invoke(Count);
     }
 

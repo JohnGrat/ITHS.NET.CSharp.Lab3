@@ -72,7 +72,7 @@ void PrintWords(Words opts)
     int langIndex = string.IsNullOrWhiteSpace(opts.sortByLanguage)
         ? 0
         : GetLanguageIndex(list.Languages, opts.sortByLanguage);
-    Console.WriteLine(list.ToString(sortByIndex: langIndex, padding: 15));
+    Console.WriteLine(list.ToString(langIndex, true));
 }
 
 void CountWords(Count opts)
