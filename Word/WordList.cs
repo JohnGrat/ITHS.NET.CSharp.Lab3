@@ -82,7 +82,7 @@ public class WordList
 
     public void Add(params string[] translations)
     {
-        if (Languages!.Count() != translations.Count()) new ArgumentException("Missing translations");
+        if (translations.Length < Languages.Length) new ArgumentException("Missing translations");
         string[] translationsTrimmed = translations.Select(word => word.Trim()).ToArray();
         _words.Add(new WordModel(translationsTrimmed));
     }
