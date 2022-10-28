@@ -17,8 +17,8 @@ public class WordList
 
     public WordList(string name, List<string[]> words, params string[] languages)
     {
-        if (languages.Distinct(StringComparer.OrdinalIgnoreCase).Count() < languages.Length)
-            throw new Exception("list cant have two of the same language");
+        if (languages.Length < 2)
+            throw new Exception("list needs to have at least 2 languages");
         Name = name;
         Languages = languages;
         _words = words.Select(translations => new WordModel(translations)).ToList();

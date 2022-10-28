@@ -27,6 +27,8 @@ void NewList(New opts)
 {
     if (WordList.GetLists().Contains(opts.ListName, StringComparer.OrdinalIgnoreCase))
         throw new Exception("Name already in use");
+    if (opts.Languages.Distinct(StringComparer.OrdinalIgnoreCase).Count() < opts.Languages.Count())
+        throw new Exception("List cant have two of the same language");
     new WordList(opts.ListName, opts.Languages as string[]).Save();
     AddEntry(new Add { ListName = opts.ListName });
 }
@@ -82,23 +84,23 @@ void CountWords(Count opts)
 void PracticeWords(Practice opts)
 {
     var selectedList = WordList.LoadList(opts.ListName);
-    int questionCounter = 0, successCounter = 0;
+    int wordCounter = 0, successCounter = 0;
     while (true)
     {
-        var word = selectedList.GetWordToPractice();
-        var question = word.Translations[word.FromLanguage];
-        var answer = word.Translations[word.ToLanguage];
+        var randomWord = selectedList.GetWordToPractice();
+        var wordToTranslate = randomWord.Translations[randomWord.FromLanguage];
+        var wordCorrectTranslation = randomWord.Translations[randomWord.ToLanguage];
         Console.WriteLine(
-            $"Translate this word to {selectedList.Languages[word.ToLanguage]} from {selectedList.Languages[word.FromLanguage]}");
-        Console.WriteLine($"the word is {question}");
+            $"Translate this word to {selectedList.Languages[randomWord.ToLanguage]} from {selectedList.Languages[randomWord.FromLanguage]}");
+        Console.WriteLine($"the word is {wordToTranslate}");
         var input = Console.ReadLine();
         if (string.IsNullOrWhiteSpace(input)) break;
-        if (string.Equals(input, answer, StringComparison.OrdinalIgnoreCase)) successCounter++;
-        else Console.WriteLine($"Wrong the correct answer is {answer}");
-        questionCounter++;
+        if (string.Equals(input, wordCorrectTranslation, StringComparison.OrdinalIgnoreCase)) successCounter++;
+        else Console.WriteLine($"Wrong the correct answer is {wordCorrectTranslation}");
+        wordCounter++;
     }
 
-    Console.WriteLine($"You practiced {questionCounter} with a success rate of {(double)successCounter / questionCounter:P1}");
+    Console.WriteLine($"You practiced {wordCounter} with a success rate of {(double)successCounter / wordCounter:P1}");
 }
 
 int GetLanguageIndex(string[] languages, string langName)
